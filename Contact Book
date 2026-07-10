@@ -1,0 +1,114 @@
+import json
+FILE1 = "data1.json"
+def add():
+        na = input("Enter the name : ").upper()
+        if na in data1:
+          print("Contact already exists.")
+          return
+        nu = input("Enter the phone Number : ")
+        em = input("Enter the email :")
+        data1[na] = {  "Phone no.":nu , "E-mail":em}
+        with open (FILE1,"w") as file:
+            json.dump(data1,file,indent=4)
+            print ("A new contact has been added !! ")
+def search():
+    sn = input("Enter the name of contact you want to search :").upper()
+    if sn in data1:
+        print("Phone no. :", data1[sn]["Phone no."])
+        print("E-mail :", data1[sn]["E-mail"])
+    else:
+        print("No such contact found")
+def edit():
+    sn = input("Enter the name of contact you want to edit :").upper()
+    if sn in data1:
+        print("Phone no. :", data1[sn]["Phone no."])
+        print("E-mail :", data1[sn]["E-mail"])
+        ed = input("""What do you want to edit 
+* Name > 1
+* Phone no. > 2
+* E-mail > 3
+* Make your choice : """)
+        if ed == '1':
+            newn = input("Enter the new name : ").upper()
+            data1[newn] = data1[sn]
+            del data1[sn]
+            print ("Contact's name has been updated !!")
+        elif ed == '2':
+            newn = input("Enter the new number : ")
+            data1[sn]["Phone no."] = newn
+            print("Contact's number has been updated !!")
+        elif ed == '3':
+            newe = input("Enter the new E-mail id : ")
+            data1[sn]["E-mail"] = newe
+            print("Contact's E-mail id has been updated !!")
+        else :
+            print("Enter a valid numbef")
+    else:
+        print("No such contact found")
+    with open (FILE1,"w") as file:
+        json.dump(data1,file,indent=4)
+def delete():
+    sn = input("Enter the name of contact you want to delete :").upper()
+    if sn in data1:
+        print("Phone no. :", data1[sn]["Phone no."])
+        print("E-mail :", data1[sn]["E-mail"])
+        ed = input("What do you want to delete it yes/no :" ).upper()
+        if ed == "YES":
+            del data1[sn]
+            print ("Contact Deleted successfully !!")
+        elif ed == "NO" :
+            print (" bye ")
+        else:
+            print ("Enter either yes/no ")
+    else:
+        print ("Such a contact do not exists ")
+    with open(FILE1, "w") as file:
+       json.dump(data1, file, indent=4)
+def view_all():
+    if not data1:
+        print ("No contacts found ")
+        return
+    else :
+        print ("\n----- All Contacts -----")
+        for na,details in data1.items():
+             print(f"Name      : {na}")
+             print(f"Phone No. : {details['Phone no.']}")
+             print(f"E-mail    : {details['E-mail']}")
+             print("-" * 25)
+        print ("That's all there is !")
+while True:
+    try:
+        with open (FILE1,"r") as file:
+            data1 = json.load(file)
+            print("\nCurrent data:")
+            print(data1)
+    except (FileNotFoundError,json.JSONDecodeError):
+          data1 = {}
+    print ("\t WELCOME TO YOUR CONTACT BOOK ")
+    ch =  input("""  What do you want 
+* Add a new contact > 1
+* Edit an existing contact > 2
+* Search for a contact > 3
+* Delete a contact > 4
+* View all contacts > 5
+* Make your choice : """)        
+    if ch == '1':
+        add()
+    elif ch == '2':
+        edit()
+    elif ch == '3':
+        search()
+    elif ch == '4':
+        delete()
+    elif ch == '5':
+        view_all()
+    else :
+        print(" Choose a valid option !!")
+    co = input("Do you want to leave Yes/No : ").upper()
+    if co == "YES":
+        break
+    elif co == "NO":
+        continue
+    else :
+        print ("Type either yes/no")
+        continue
